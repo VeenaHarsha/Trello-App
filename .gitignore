@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.env
+ToDoDrag.css
+ToDoDragDropDemo.js
+node_modules
+images

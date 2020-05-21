@@ -1,0 +1,107 @@
+.App {
+  text-align: center;
+}
+/* Board */
+* {
+  margin: 0;
+}
+.container {
+  width:100%;
+  margin: 0 auto;
+}
+.header {
+  display: flex;
+  background: #1a6aa7;
+  margin-top:0;
+  height:2.2em;
+}
+
+.header input{
+  width:220px;
+  background:#6ea3ca;
+  padding:10px;
+  border-radius: 3px;
+  border:none;
+  left:0;
+  margin:3px 0;
+  margin-left:10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: white; /* #172b4d;*/
+}
+.header .board-search {
+  color:white;
+}
+
+.header span img{
+  width:15%;
+  margin-top:5px;
+  float: left;
+}
+.header h2{
+  width:65%;
+  color:beige;
+  margin: 0 5px;
+  text-align: inherit;
+}
+.header button {
+  border:none;
+  width:10%;
+  border-radius: 3px;
+  cursor: pointer;
+  padding:5px;
+  background:#6ea3ca;
+  color:beige;
+  margin:3px 5px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 800;
+}
+
+/*Board- Main */
+.body{
+  display: block;
+}
+ .main-board-div{
+  width:643px;
+  border:5px solid deeppink;
+  margin:10px 10px 10px 300px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.board-display {
+  width:150px;
+  height:80px;
+  padding: 10px;
+  margin: 10px;
+  border:5px solid blue;
+  background: #48a548;
+  border-radius: 3px;
+}
+.board-div{
+  max-width:300px;
+  height:100px;
+  float: right;
+}
+.board-input{
+  width:150px;
+  border:5px solid yellowgreen;
+}
+/*LISTS*/
+.list-div{
+  width:643px;
+  height:650px;
+  border:5px solid blue;
+  margin:10px 10px 10px 300px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-page{
+  width:643px;
+  height:650px;
+  border:5px solid red;
+  margin:10px 10px 10px 300px;
+  display: flex;
+  flex-wrap: wrap;
+  border:5px solid green;
+}
