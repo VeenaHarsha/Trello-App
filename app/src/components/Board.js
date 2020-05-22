@@ -1,25 +1,81 @@
-import React, { useState, useEffect } from 'react'
-import BoardItem from './BoardItem'
+import React, { useEffect, useReducer, createContext } from 'react'
+import BoardsList from './BoardsList'
+
+function reducer (state, action) {
+  switch (action.type) {
+    case 'field': {
+      return {
+        ...state,
+        [action.fieldName]: action.payLoad
+      }
+    }
+    case 'getBoardList': {
+      return {
+        ...state,
+        boards: state.boards.concat(action.payLoad)
+      }
+    }
+    case 'addBoard': {
+      return {
+        ...state,
+        boards: state.boards.concat(action.payLoad.result),
+        boardName: '',
+        showAddBoard: false
+      }
+    }
+    case 'handleAddBoard': {
+      return {
+        ...state,
+        showAddBoard: !state.showAddBoard
+      }
+    }
+    case 'error': {
+      return {
+        ...state,
+        'Error: ': action.payLoad
+      }
+    }
+    case 'handleBoardClick': {
+      return {
+        ...state,
+        showBoardList: false,
+        showLists: true
+      }
+    }
+
+    default: {
+      return state
+    }
+  }
+}
+
+const initialState = {
+  showAddBoard: false,
+  showBoardList: true,
+  showLists: false,
+  boards: [],
+  boardName: ''
+}
+
+export const StateContext = createContext()
+export const DispatchContext = createContext()
 
 function Board () {
-  const [showAddBoard, setShowAddBoard] = useState(false)
-  const [showBoardList, setShowBoardList] = useState(true)
-  const [boards, setBoards] = useState([{}])
-  const [boardName, setBoardName] = useState('')
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { showAddBoard, showBoardList, boards, boardName } = state
 
   useEffect(() => {
     console.log('Am from useEffect...')
     getBoards()
-  }, [boardName])
+  }, [])
 
   const getBoards = async () => {
     const response = await window.fetch('http://localhost:2809/trello/board/')
-    console.log('Response:', response)
     const data = await response.json()
-    setBoards(data)
+    dispatch({ type: 'getBoardList', payLoad: data })
   }
 
-  const addBoard = async (event) => {
+  const submitBoard = async (event) => {
     event.preventDefault()
     const options = {
       method: 'POST',
@@ -29,70 +85,53 @@ function Board () {
     try {
       const response = await window.fetch('http://localhost:2809/trello/board/add/', options)
       const data = await response.json()
-      console.log('Data Is:', data)
-      setBoards([...boards, { id: data.result.id, boardName: data.result.board_name }])
-      setBoardName('')
-      setShowAddBoard(false)
+      dispatch({ type: 'addBoard', payLoad: data })
     } catch (err) {
-      console.log('Error: ', err)
+      dispatch({ type: 'error', payLoad: err })
     }
   }
-
-  const handleInputChange = (event) => {
-    setBoardName(event.target.value)
-  }
-
-  const handleClick = () => {
-    setShowAddBoard(!showAddBoard)
-  }
-
-  const handleShowBoardList = (flag) => {
-    setShowBoardList(flag)
-  }
-
   return (
-    <div className='container'>
-      <div className='header'>
-        <input
-          className='board-search'
-          type='text'
-          placeholder='Search..'
-        />
-        {/* <span><img src={require('../images/search.png')} alt='search' /></span> */}
-        <h2>Trello</h2>
-        <button onClick={handleClick}>New Board</button>
-      </div>
-      {showAddBoard &&
-        <div className='board-div'>
-          <form onSubmit={addBoard}>
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={state}>
+        <div className='container'>
+          <div className='header'>
             <input
+              className='board-search'
               type='text'
-              className='board-input'
-              placeholder='Add Board..'
-              onChange={handleInputChange}
-              value={boardName}
+              placeholder='Search..'
             />
-          </form>
-        </div>}
-
-      <div className='body'>
-        <div className='main-board-div'>
-          {showBoardList &&
-            <div>
-              {boards.map(board => (
-                <div key={board.id}>
-                  <BoardItem
-                    boardId={board.id}
-                    boardName={board.board_name}
-                    showBoards={handleShowBoardList}
-                  />
-                </div>
-              ))}
+            <h2>Trello</h2>
+            <button
+              onClick={() => dispatch({ type: 'handleAddBoard' })}
+            >
+            New Board
+            </button>
+          </div>
+          {showAddBoard &&
+            <div className='board-div'>
+              <form onSubmit={submitBoard}>
+                <input
+                  type='text'
+                  className='board-input'
+                  placeholder='Add Board..'
+                  value={boardName}
+                  onChange={(e) =>
+                    dispatch({
+                      type: 'field',
+                      fieldName: 'boardName',
+                      payLoad: e.target.value
+                    })}
+                />
+              </form>
             </div>}
+          <>
+            <div className='main-board-div'>
+              {showBoardList && <BoardsList boards={boards} />}
+            </div>
+          </>
         </div>
-      </div>
-    </div>
+      </StateContext.Provider>
+    </DispatchContext.Provider>
   )
 }
-
 export default Board

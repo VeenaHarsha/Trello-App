@@ -1,25 +1,16 @@
-import React, { useState } from 'react'
-import Lists from './Lists'
+import React, { useContext } from 'react'
+// import Lists from './Lists'
+import { StateContext, DispatchContext } from './Board'
 
-function BoardItem (props) {
-  const { boardId, boardName, showBoards } = props
-  const [showList, setShowList] = useState(false)
-
-  const handleClickBoard = () => {
-    console.log('AM Clicked:', boardId)
-    showBoards(false)
-    setShowList(true)
-  }
-
+function BoardItem ({ board }) {
+  const dispatch = useContext(DispatchContext)
+  const state = useContext(StateContext)
   return (
-    <div>
-      <div className='board-display'>
-        <div onClick={handleClickBoard}>{boardName}</div>
-        {showList ? <Lists /> : null}
-      </div>
-      <div>
-        <Lists boardId={boardId} boardName={boardName} />
-      </div>
+    <div
+      className='board-display'
+      onClick={() => dispatch({ type: 'handleBoardClick' })}
+    >
+      {board.board_name}
     </div>
   )
 }

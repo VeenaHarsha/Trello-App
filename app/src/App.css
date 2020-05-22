@@ -67,6 +67,7 @@
   border:5px solid deeppink;
   margin:10px 10px 10px 300px;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
 }
 .board-display {

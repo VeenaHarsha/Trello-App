@@ -6,7 +6,13 @@ function App () {
   return (
     <div className='App'>
       <Board />
+      <Lists />
     </div>
+  )
+}
+function Lists () {
+  return (
+    <h1>List Goes Here...</h1>
   )
 }
 
