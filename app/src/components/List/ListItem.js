@@ -1,36 +1,53 @@
 import React, { useContext, useReducer, useEffect, createContext } from 'react'
 import { StateContext } from '../../App'
-import Cards from '../Cards/Cards'
+import CardsList from '../Cards/CardsList'
+import { GET_LIST_CARDS, ADD_CARD, ERROR, HANDLE_CLOSE, ADD_CARD_INPUT, HANDLE_CARD_CLICK } from '../../actionType'
 
 export const ListStateContext = createContext()
 export const ListDispatchContext = createContext()
 
 const listReducer = (state, action) => {
   switch (action.type) {
-    case 'handleCardClick': {
+    case HANDLE_CARD_CLICK: {
       return {
         ...state,
         showCardInput: !state.showCardInput
       }
     }
-    case 'field': {
+    case ADD_CARD_INPUT : {
       return {
         ...state,
         [action.fieldName]: action.payLoad
       }
     }
-    case 'addCard': {
+    case ADD_CARD: {
       return {
         ...state,
         cards: state.cards.concat(action.payLoad),
-        showCardInput: !state.showCardInput
+        showCardInput: !state.showCardInput,
+        cardTitle: ''
       }
     }
-    case 'getListCards': {
+    case GET_LIST_CARDS: {
       return {
         ...state,
         cards: state.cards.concat(action.payLoad)
       }
+    }
+    case HANDLE_CLOSE: {
+      return {
+        ...state,
+        showCardInput: !state.showCardInput
+      }
+    }
+    case ERROR: {
+      return {
+        ...state,
+        'Error: ': action.payLoad
+      }
+    }
+    default: {
+      return state
     }
   }
 }
@@ -44,7 +61,6 @@ function ListItem ({ list }) {
   const [state, dispatch] = useReducer(listReducer, listInitState)
   const boardState = useContext(StateContext)
   const { selBoard } = boardState
-  const { cardTitle } = state
 
   useEffect(() => {
     getListCards()
@@ -56,9 +72,9 @@ function ListItem ({ list }) {
     try {
       const response = await window.fetch(url)
       const data = await response.json()
-      dispatch({ type: 'getListCards', payLoad: data })
+      dispatch({ type: 'GET_LIST_CARDS', payLoad: data })
     } catch (err) {
-      dispatch({ type: 'error', payLoad: err })
+      dispatch({ type: 'ERROR', payLoad: err })
     }
   }
 
@@ -68,7 +84,7 @@ function ListItem ({ list }) {
         <div className='list-div'>
           <span className='list-header'> {list.list_name}</span>
           <div>
-            <Cards list={list} />
+            <CardsList list={list} />
           </div>
         </div>
       </ListStateContext.Provider>

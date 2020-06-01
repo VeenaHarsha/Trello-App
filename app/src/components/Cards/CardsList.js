@@ -21,9 +21,9 @@ function CardsList ({ list }) {
     try {
       const response = await window.fetch('http://localhost:2809/trello/card/add', options)
       const data = await response.json()
-      listDispatch({ type: 'addCard', payLoad: data })
+      listDispatch({ type: 'ADD_CARD', payLoad: data })
     } catch (err) {
-      listDispatch({ type: 'error', payLoad: err })
+      listDispatch({ type: 'ERROR', payLoad: err })
     }
   }
   const handleDragover = (e) => {
@@ -56,11 +56,11 @@ function CardsList ({ list }) {
           <span className='plus-img'>+</span>
           <a
             className='add-card-link'
-            onClick={() => listDispatch({ type: 'handleCardClick' })}
+            onClick={() => listDispatch({ type: 'HANDLE_CARD_CLICK' })}
           >
-                  Add a Card
+                    Add a Card
           </a>
-        </div> : null}
+          </div> : null}
       {showCardInput
         ? <div>
           <form className='card-form' onSubmit={submitCard}>
@@ -71,7 +71,7 @@ function CardsList ({ list }) {
               value={cardTitle}
               onChange={(e) =>
                 listDispatch({
-                  type: 'field',
+                  type: 'ADD_CARD_INPUT',
                   fieldName: 'cardTitle',
                   payLoad: e.target.value
                 })}
@@ -79,11 +79,11 @@ function CardsList ({ list }) {
             <button className='add-card-btn'>Add Card</button>
             <span
               className='X-image'
-              onClick={() => listDispatch({ type: 'handleClose' })}
+              onClick={() => listDispatch({ type: 'HANDLE_CLOSE' })}
             >X
             </span>
           </form>
-        </div> : null}
+          </div> : null}
 
     </div>
   )

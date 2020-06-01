@@ -1,0 +1,17 @@
+export const GET_BOARD_LIST = 'GET_BOARD_LIST'
+export const SET_BOARD_NAME = 'SET_BOARD_NAME'
+export const ADD_BOARD = 'ADD_BOARD'
+export const HANDLE_ADD_BOARD = 'HANDLE_ADD_BOARD'
+export const HANDLE_BOARD_CLICK = 'HANDLE_BOARD_CLICK'
+export const HANDLE_LIST_CLICK = 'HANDLE_LIST_CLICK'
+export const GET_LISTS = 'GET_LISTS'
+export const ADD_LIST_INPUT = 'ADD_LIST_INPUT'
+export const ADD_LIST = 'ADD_LIST'
+export const GET_LIST_CARDS = 'GET_LIST_CARDS'
+export const ADD_CARD = 'ADD_CARD'
+export const ERROR = 'ERROR'
+export const HANDLE_CLOSE = 'HANDLE_CLOSE'
+export const HANDLE_CARD_CLICK = 'HANDLE_CARD_CLICK'
+export const ADD_CARD_INPUT = 'ADD_CARD_INPUT'
+
+

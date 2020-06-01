@@ -1,40 +1,44 @@
 import React, { useEffect, useContext, useReducer } from 'react'
 import { StateContext } from '../../App'
 import ListItem from './ListItem'
+import { HANDLE_LIST_CLICK, ADD_LIST, GET_LISTS, ADD_LIST_INPUT } from '../../actionType'
 
-const initialState = {
+const initialListState = {
   listName: '',
   lists: [],
   showListInput: false
 }
 
-const reducer = (state, action) => {
+const listReducer = (state, action) => {
+  console.log('Action is:', action)
   switch (action.type) {
-    case 'field': {
+    case ADD_LIST_INPUT: {
       return {
         ...state,
         [action.fieldName]: action.payLoad
       }
     }
-    case 'getLists': {
+    case GET_LISTS : {
       return {
         ...state,
         lists: state.lists.concat(action.payLoad)
       }
     }
-    case 'addList': {
+    case ADD_LIST : {
       return {
         ...state,
         lists: state.lists.concat(action.payLoad),
-        listName: ''
+        listName: '',
+        showListInput: !state.showListInput
       }
     }
-    case 'handleListClick': {
+    case HANDLE_LIST_CLICK: {
       return {
         ...state,
         showListInput: !state.showListInput
       }
     }
+
     default: {
       return state
     }
@@ -42,9 +46,8 @@ const reducer = (state, action) => {
 }
 
 function Lists () {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(listReducer, initialListState)
   const boardState = useContext(StateContext)
-  // const boardDispatch = useContext(DispatchContext)
   const { selBoard, selBoardName } = boardState
   const { listName, lists, showListInput } = state
 
@@ -55,9 +58,7 @@ function Lists () {
   const getLists = async () => {
     const response = await window.fetch(`http://localhost:2809/trello/list/${selBoard}`)
     const data = await response.json()
-    console.log(data)
-    dispatch({ type: 'getLists', payLoad: data })
-    // setLists(data)
+    dispatch({ type: GET_LISTS, payLoad: data })
   }
 
   const submitList = async (event) => {
@@ -70,46 +71,52 @@ function Lists () {
     try {
       const response = await window.fetch('http://localhost:2809/trello/list/add', options)
       const data = await response.json()
-      dispatch({ type: 'addList', payLoad: data })
+      dispatch({ type: 'ADD_LIST', payLoad: data })
     } catch (err) {
-      dispatch({ type: 'error', payLoad: err })
+      dispatch({ type: 'ERROR', payLoad: err })
     }
   }
 
   return (
     <div className='list-div-container'>
-      <div className='list-header'>
-        <h2>{selBoardName} </h2>
-      </div>
-      <div className='add-list-div'>
-        <form className='list-form' onSubmit={submitList}>
-          {!showListInput
-            ? <a onClick={() => dispatch({ type: 'handleListClick' })}>
-              <span className='plus-img'>+</span>
-              <span className='add-text'>Add list...</span>
-            </a> : null}
-          {showListInput ? <div>
-            <input
-              placeholder='Enter list title..'
-              type='text'
-              className='add-list-input'
-              // onChange={handleChange}
-              onChange={(e) =>
-                dispatch({
-                  type: 'field',
-                  fieldName: 'listName',
-                  payLoad: e.target.value
-                })}
-              value={listName}
-            />
-            <button className='add-list-btn'>Add List</button>
-                           </div> : null}
-        </form>
-      </div>
+      <p className='disp-board-name'>{selBoardName} </p>
       <div className='all-list-div'>
         {lists.map(list => (
           <ListItem key={list.id} list={list} />
         ))}
+
+        {showListInput
+          ? <div>
+            <form className='list-form' onSubmit={submitList}>
+              <input
+                placeholder='Enter list title..'
+                type='text'
+                className='add-list-input'
+                onChange={(e) =>
+                  dispatch({
+                    type: 'ADD_LIST_INPUT',
+                    fieldName: 'listName',
+                    payLoad: e.target.value
+                  })}
+                value={listName}
+              />
+              <button
+                type='button'
+                className='add-list-btn'
+                onClick={() => dispatch({ type: 'HANDLE_LIST_CLICK' })}
+              >
+                Close
+              </button>
+            </form>
+          </div> : null}
+
+        {!showListInput
+          ? <div
+            className='add-list-div'
+            onClick={() => dispatch({ type: 'HANDLE_LIST_CLICK' })}
+            >
+            Add another list
+          </div> : null}
       </div>
     </div>
   )
