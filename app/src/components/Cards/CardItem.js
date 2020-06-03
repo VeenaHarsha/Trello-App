@@ -1,8 +1,11 @@
 import React from 'react'
 
 function CardItem ({ card }) {
-  const dragStartHandler = (e, id) => {
-    e.dataTransfer.setData('id', id)
+  const dragStartHandler = (e, card) => {
+    console.log('Card is :', card)
+    const cardObj = JSON.stringify(card)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('card', cardObj)
   }
 
   return (
@@ -11,7 +14,7 @@ function CardItem ({ card }) {
         key={card.id}
         className='card-div'
         draggable
-        onDragStart={(e) => dragStartHandler(e, card.id)}
+        onDragStart={(e) => dragStartHandler(e, card)}
       >
         <p>{card.card_desc}</p>
       </div>

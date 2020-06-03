@@ -1,7 +1,33 @@
 .App {
   text-align: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  
+}
+.main-content{
+  display: flex;
+  flex-direction: row;
+}
+/*Nav*/
+.home-left-sidebar {
+  /* border:5px solid red; */
+  /* margin: 40px 0 0; */
+  margin: 10px;
+  width:25%;
 }
 /* Board */
+.btn-add-board{
+  float: right;
+  border:none;
+  width:10px;
+  border-radius: 3px;
+  cursor: pointer;
+  padding:6px;
+  text-align: center;
+  background:rgb(99, 240, 64);
+  color:beige;
+  margin:3px 15px;
+  font-weight: 900;
+}
 * {
   margin: 0;
 }
@@ -11,14 +37,16 @@
 }
 .header {
   display: flex;
-  background: #1a6aa7;
+  /* background: #1a6aa7; */
+  background: rgb(137, 250, 109);
   margin-top:0;
   height:2.2em;
+  width: 100%;
 }
 
 .header input{
   width:220px;
-  background:#6ea3ca;
+  background:rgb(178, 245, 161);
   padding:10px;
   border-radius: 3px;
   border:none;
@@ -39,23 +67,42 @@
   float: left;
 }
 .header h2{
-  width:65%;
-  color:beige;
+  /* background-image: url(https://a.trellocdn.com/prgb/dist/images/header-logo-2x.01ef898….png); */
+  width:80%;
+  color:purple;
   margin: 0 5px;
   text-align: inherit;
+  /* font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+  font-family: monospace;
 }
-.header button {
-  border:none;
-  width:10%;
-  border-radius: 3px;
+.add-board-form{
+  width:250px;
+  height:60px;
+  margin:10px;
+  padding:10px;
+  align-content: center;
+  /* background:rgb(190, 248, 190);
+  border:5px solid yellowgreen; */
+  background-color: #cae8ca;
+  border: 2px solid #4CAF50;
+
+}
+.board-input{
+  width:200px;
+  border:5px solid yellowgreen;
   cursor: pointer;
   padding:5px;
-  background:#6ea3ca;
-  color:beige;
-  margin:3px 5px;
-  font-size: 15px;
-  text-align: center;
+  border-radius: 3px;
+}
+.close-board-button {
+  padding: 5px;
+  margin: 5px;
+  width:50px;
+  background:rgb(84, 179, 84);
+  color:whitesmoke;
   font-weight: 800;
+  border:none;
+  border-radius: 3px;
 }
 
 /*Board- Main */
@@ -64,8 +111,8 @@
 }
  .main-board-div{
   width:643px;
-  border:5px solid deeppink;
-  margin:10px 10px 10px 300px;
+  /* margin:10px 10px 10px 300px; */
+  margin:10px 10px 10px 30px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -75,34 +122,264 @@
   height:80px;
   padding: 10px;
   margin: 10px;
-  border:5px solid blue;
-  background: #48a548;
+  /* border:5px solid green; */
+  background: #4CAF50;
   border-radius: 3px;
+  font-size:16px;
+  font-weight: 900;
 }
 .board-div{
   max-width:300px;
   height:100px;
   float: right;
+  cursor: pointer;
 }
-.board-input{
-  width:150px;
-  border:5px solid yellowgreen;
-}
+
 /*LISTS*/
-.list-div{
-  width:643px;
+
+.list-div-container{
+  /* width:643px; */
   height:650px;
-  border:5px solid blue;
-  margin:10px 10px 10px 300px;
-  display: flex;
-  flex-wrap: wrap;
 }
+
 .list-page{
   width:643px;
-  height:650px;
-  border:5px solid red;
+  /* height:650px; */
   margin:10px 10px 10px 300px;
   display: flex;
   flex-wrap: wrap;
-  border:5px solid green;
+  /* border:5px solid green; */
+}
+.all-list-div{
+  width:100%;
+  margin-bottom:10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-div{
+  /* display: inline-block; */
+    margin: 10px;
+    /* height: 100px; */
+    width: 250px;
+    padding:10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color:#ebecf0;
+    
+}
+
+.add-list-input{
+  width:150px;
+  border-radius: 3px;
+  height: auto;
+  padding: 8px
+}
+.add-list-btn{
+   /* float: left; */
+   border:none;
+   color:beige;
+   font-weight: bold;
+    margin: 2px;
+    margin:5px;
+    padding: 5px;
+    background:rgb(84, 179, 84);
+    color:whitesmoke;
+    font-weight: 800;
+    border-radius: 3px;
+}
+.disp-board-name{
+  text-align: center;
+  font-weight: 900;
+  margin: 5px;
+  padding: 8px;
+  /* width:10%; */
+  color:purple;
+  background: rgb(137, 250, 109);
+}
+.list-form {
+  width:205px;
+  height:60px;
+  margin:10px;
+  padding:10px;
+  align-content: center;
+  background-color: #ebecf0;
+  /* border: 2px solid #4CAF50; */
+}
+.list-header{
+  display: inline-block;
+  background: lightgray;
+  /* background:rgb(74, 247, 80); */
+  width:90%;
+  border-radius: 3px;
+  border:none;
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  /* border:5px solid green; */
+}
+
+.add-card-div{
+  width:95%;
+  background: lightgray;
+  border:none;
+  /* background:rgb(74, 247, 80); */
+  margin-top:5px;
+  padding: 5px;
+
+}
+.add-card-link{
+  /* border:2px solid magenta; */
+  background: transparent;
+  padding: 5px;
+  border:none;
+}
+.add-card-btn{
+  background:rgb(74, 247, 80);
+  padding: 3px;
+  border-radius: 3px;
+  color:black;
+   font-weight: bold;
+  padding: 10px;
+  border:none;
+  float: left;
+}
+ .X-image{
+  float: left;
+  padding: 8px;
+  background:rgb(74, 247, 80);
+   border-radius: 3px;
+  color:black;
+  margin-left:5%;
+   font-weight: bold;
+} 
+.list-div .card-text-input{
+  padding:8px;
+  width:90%;
+  border:groove;
+}
+.card-container {
+  padding:5px;
+  /* border:5px solid red; */
+}
+.card-div {
+  border:none;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  padding:5px;
+  margin-bottom: 8px;
+  font-size:15px;
+  background: #fff;
+  border-radius: 3px;
+}
+.home-container {
+  display: flex;
+  flex-direction: row;
+  /* margin: 40px 0 0; */
+  margin-top: 10px;
+  width:70%;
+ /* border: 5px solid purple; */
+}
+.template-container {
+  /* margin-top: 40px; */
+  margin-top: 10px;
+  width: 50%;
+  padding: 20px;
+  border:5px solid blue;
+}
+ .board-container{
+  /* margin-top: 40px; */
+  margin-top: 10px;
+  width: 70%;
+  padding: 20px;
+  /* border:5px solid blue; */
+}
+
+.home-main-content {
+  /* border:5px solid green; */
+  margin-top: 10px;
+  padding: 45px;
+  width: 420px;
+  /* width:70%; */
+  flex-direction: column;
+  
+}
+.home-main-content-2{
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+  display: flex;
+  margin-bottom: 16px;
+  position: relative;
+  width: 100%;
+}
+.background-image-div{
+  height:108px;
+  background-color: #fdf4e7;
+  background-image: url(https://a.trellocdn.com/prgb/dist/images/home/orientation/no-content.e25c676458c1f4cb280b.svg);
+}
+.home-text-div{
+  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    padding: 16px;
+    width: 100%;
+}
+.home-right-sidebar {
+  border:5px solid blue;
+  width: 100%;
+  margin-top: 10px;
+  max-width: 342px;
+  width: 100%;
+  padding-left: 50px;
+  /* width: 342px; */
+  /* width:30%; */
+}
+nav {
+  /* margin: 40px 0 0; */
+  padding:20px;
+  width: 240px;
+  /* border:5px solid blue; */
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+li {
+  margin-bottom: 4px;
+  /* border:1px solid #ccc;
+  background: #e4f0f6; */
+  padding: 5px;
+  /* background-color: #cae8ca; */
+  background-color:rgb(149, 248, 153);
+  /* border: 2px solid #4CAF50; */
+  text-align: center;
+  display: list-item;
+  color: black;
+  font-weight: bold;
+}
+.create-board-div{
+  background-color:rgb(149, 248, 153);
+  text-align: center;
+  width:150px;
+  height:80px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  font-size:14px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.add-list-div {
+  background-color:#ebecf0;
+  text-align: center;
+  width:230px;
+  height:50px;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 3px;
+  font-size:14px;
+  font-weight: 900;
+  cursor: pointer;
 }

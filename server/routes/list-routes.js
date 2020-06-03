@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const listQueries = require('../model/list-queries')
+const { getLists, addList } = require('../model/list-queries')
 
-router.get('/:boardId', listQueries.getLists)
-router.post('/add', listQueries.addList)
+router.get('/:boardId', getLists)
+router.post('/add', addList)
 
 module.exports = router

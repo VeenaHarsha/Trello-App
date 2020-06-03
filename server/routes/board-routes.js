@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const boardQueries = require('../model/board-queries')
+const { getBoards, addBoard } = require('../model/board-queries')
 
-router.get('/', boardQueries.getBoards)
-router.post('/add', boardQueries.addBoard)
+router.get('/', getBoards)
+router.post('/add', addBoard)
 
 module.exports = router

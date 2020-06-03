@@ -1,7 +1,8 @@
 const router = require('express').Router()
-const cardQueries = require('../model/card-queries')
+const { getCards, addCard, updateCardPosition } = require('../model/card-queries')
 
-router.get('/', cardQueries.getCards)
-router.post('/add', cardQueries.addCard)
+router.get('/', getCards)
+router.post('/add', addCard)
+router.put('/updatePosition', updateCardPosition)
 
 module.exports = router

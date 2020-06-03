@@ -1,15 +1,18 @@
 const pool = require('./database')
 
-const getBoards = (req, res) => {
+const getBoards = async (req, res) => {
   console.log('Am Inside Boards:', req.url)
-  pool.query('SELECT * FROM board ORDER BY ID ASC', (error, result) => {
-    if (error) {
-      throw error
-    }
-    res.status(200).json(result.rows)
-  })
+  const result = await pool.query('SELECT * FROM board ORDER BY ID ASC')
+  res.status(200).json(result.rows)
+  console.log('Result is:', result)
+  // , (error, result) => {
+  //   if (error) {
+  //     throw error
+  //   }
+  //   res.status(200).json(result.rows)
+  // })
 }
-
+// prepared statement
 const addBoard = (req, res) => {
   console.log('Am Inside Boards:', req.url)
   console.log('Am Inside Boards:', req.body)

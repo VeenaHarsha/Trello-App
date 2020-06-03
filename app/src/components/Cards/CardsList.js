@@ -1,15 +1,29 @@
-import React, { useContext } from 'react'
+import React, { useContext, useReducer, useEffect } from 'react'
 import CardItem from './CardItem'
 import { StateContext } from '../../App'
-import { ListStateContext, ListDispatchContext } from '../List/ListItem'
+import { initialState, cardReducer } from './CardReducer'
 
 function CardsList ({ list }) {
+  const [state, dispatch] = useReducer(cardReducer, initialState)
   const boardState = useContext(StateContext)
   const { selBoard } = boardState
+  const { cards, showCardInput, cardTitle } = state
 
-  const listState = useContext(ListStateContext)
-  const listDispatch = useContext(ListDispatchContext)
-  const { cards, showCardInput, cardTitle } = listState
+  useEffect(() => {
+    getListCards()
+  }, [])
+
+  const getListCards = async () => {
+    const selList = list.id
+    const url = `http://localhost:2809/trello/card/?boardId=${selBoard}&listId=${selList}`
+    try {
+      const response = await window.fetch(url)
+      const data = await response.json()
+      dispatch({ type: 'GET_LIST_CARDS', payLoad: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payLoad: err })
+    }
+  }
 
   const submitCard = async (event) => {
     event.preventDefault()
@@ -21,31 +35,60 @@ function CardsList ({ list }) {
     try {
       const response = await window.fetch('http://localhost:2809/trello/card/add', options)
       const data = await response.json()
-      listDispatch({ type: 'ADD_CARD', payLoad: data })
+      dispatch({ type: 'ADD_CARD', payLoad: data })
     } catch (err) {
-      listDispatch({ type: 'ERROR', payLoad: err })
+      dispatch({ type: 'ERROR', payLoad: err })
     }
   }
+  const updateCard = async (event, sourceObj, targetPos) => {
+    event.preventDefault()
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        position: targetPos
+      })
+    }
+    try {
+      const url = `http://localhost:2809/trello/card/updatePosition/?cardId=${sourceObj.id}`
+      const response = await window.fetch(url, options)
+      const data = await response.json()
+      dispatch({ type: 'UPDATE_CARD_POSITION', payLoad: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payLoad: err })
+    }
+  }
+  const changePosition = (event, sourceObj, targetPos) => {
+    event.preventDefault()
+    if (sourceObj.position < targetPos) {
+      sourceObj.position = targetPos + 0.1
+    } else if (sourceObj.position > targetPos) {
+      sourceObj.position = targetPos - 0.1
+    }
+    updateCard(event, sourceObj, sourceObj.position)
+  }
+
   const handleDragover = (e) => {
     e.preventDefault()
   }
-  const handleDrop = (e) => {
+
+  const handleDrop = (e, pos) => {
     e.preventDefault()
-    const id = e.dataTransfer.getData('id')
-    const target = e.target.parentElement.parentElement
-    console.log('Being Dragged:', document.getElementById(id).firstElementChild, e.target.parentElement)
-    target.appendChild(document.getElementById(id))
+    const obj = JSON.parse(e.dataTransfer.getData('card'))
+    // const target = e.target // e.target.parentElement.parentElement
+    console.log('Being Dragged:', obj, pos)
+    changePosition(e, obj, pos)
+    // target.appendChild(document.getElementById(id))
     // e.dataTransfer.clearData()
   }
   return (
     <div className='card-container'>
-      {cards.map((card) => (
+      {cards.map(card => (
         <div
-          id={card.id}
           key={card.id}
           className='card-list'
           onDragOver={handleDragover}
-          onDrop={handleDrop}
+          onDrop={(e) => handleDrop(e, card.position)}
         >
           <CardItem card={card} />
         </div>
@@ -56,7 +99,7 @@ function CardsList ({ list }) {
           <span className='plus-img'>+</span>
           <a
             className='add-card-link'
-            onClick={() => listDispatch({ type: 'HANDLE_CARD_CLICK' })}
+            onClick={() => dispatch({ type: 'HANDLE_CARD_CLICK' })}
           >
                     Add a Card
           </a>
@@ -70,7 +113,7 @@ function CardsList ({ list }) {
               placeholder='Enter title for this card..'
               value={cardTitle}
               onChange={(e) =>
-                listDispatch({
+                dispatch({
                   type: 'ADD_CARD_INPUT',
                   fieldName: 'cardTitle',
                   payLoad: e.target.value
@@ -79,7 +122,7 @@ function CardsList ({ list }) {
             <button className='add-card-btn'>Add Card</button>
             <span
               className='X-image'
-              onClick={() => listDispatch({ type: 'HANDLE_CLOSE' })}
+              onClick={() => dispatch({ type: 'HANDLE_CLOSE' })}
             >X
             </span>
           </form>

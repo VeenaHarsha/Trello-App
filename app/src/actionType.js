@@ -13,5 +13,7 @@ export const ERROR = 'ERROR'
 export const HANDLE_CLOSE = 'HANDLE_CLOSE'
 export const HANDLE_CARD_CLICK = 'HANDLE_CARD_CLICK'
 export const ADD_CARD_INPUT = 'ADD_CARD_INPUT'
+export const UPDATE_CARD_POSITION = 'UPDATE_CARD_POSITION'
+
 
 

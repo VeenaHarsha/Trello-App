@@ -23,7 +23,7 @@ export const reducer = (state, action) => {
       console.log('From getBoardList: ', action.payLoad)
       return {
         ...state,
-        boards: state.boards.concat(action.payLoad)
+        boards: action.payLoad
       }
     }
     case ADD_BOARD : {

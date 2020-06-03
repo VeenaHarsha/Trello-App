@@ -1,54 +1,12 @@
 import React, { useEffect, useContext, useReducer } from 'react'
 import { StateContext } from '../../App'
+import { initialState, listReducer } from './ListReducer'
 import ListItem from './ListItem'
-import { HANDLE_LIST_CLICK, ADD_LIST, GET_LISTS, ADD_LIST_INPUT } from '../../actionType'
-
-const initialListState = {
-  listName: '',
-  lists: [],
-  showListInput: false
-}
-
-const listReducer = (state, action) => {
-  console.log('Action is:', action)
-  switch (action.type) {
-    case ADD_LIST_INPUT: {
-      return {
-        ...state,
-        [action.fieldName]: action.payLoad
-      }
-    }
-    case GET_LISTS : {
-      return {
-        ...state,
-        lists: state.lists.concat(action.payLoad)
-      }
-    }
-    case ADD_LIST : {
-      return {
-        ...state,
-        lists: state.lists.concat(action.payLoad),
-        listName: '',
-        showListInput: !state.showListInput
-      }
-    }
-    case HANDLE_LIST_CLICK: {
-      return {
-        ...state,
-        showListInput: !state.showListInput
-      }
-    }
-
-    default: {
-      return state
-    }
-  }
-}
 
 function Lists () {
-  const [state, dispatch] = useReducer(listReducer, initialListState)
   const boardState = useContext(StateContext)
   const { selBoard, selBoardName } = boardState
+  const [state, dispatch] = useReducer(listReducer, initialState)
   const { listName, lists, showListInput } = state
 
   useEffect(() => {
@@ -56,9 +14,14 @@ function Lists () {
   }, [])
 
   const getLists = async () => {
-    const response = await window.fetch(`http://localhost:2809/trello/list/${selBoard}`)
-    const data = await response.json()
-    dispatch({ type: GET_LISTS, payLoad: data })
+    try {
+      const response = await window.fetch(`http://localhost:2809/trello/list/${selBoard}`)
+      const data = await response.json()
+      console.log('VVV:', data)
+      dispatch({ type: 'GET_LISTS', payLoad: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payLoad: err })
+    }
   }
 
   const submitList = async (event) => {
@@ -108,14 +71,14 @@ function Lists () {
                 Close
               </button>
             </form>
-          </div> : null}
+            </div> : null}
 
         {!showListInput
           ? <div
             className='add-list-div'
             onClick={() => dispatch({ type: 'HANDLE_LIST_CLICK' })}
             >
-            Add another list
+            Add a list
           </div> : null}
       </div>
     </div>
