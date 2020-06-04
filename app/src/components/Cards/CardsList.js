@@ -40,17 +40,18 @@ function CardsList ({ list }) {
       dispatch({ type: 'ERROR', payLoad: err })
     }
   }
-  const updateCard = async (event, sourceObj, targetPos) => {
+  const updateCard = async (event, sourceObj, targetObj) => {
     event.preventDefault()
+    console.log('Object:', sourceObj, targetObj)
     const options = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        position: targetPos
+        position: sourceObj.position
       })
     }
     try {
-      const url = `http://localhost:2809/trello/card/updatePosition/?cardId=${sourceObj.id}`
+      const url = `http://localhost:2809/trello/card/updatePosition/?cardId=${sourceObj.id}&&listId=${targetObj.list_id}`
       const response = await window.fetch(url, options)
       const data = await response.json()
       dispatch({ type: 'UPDATE_CARD_POSITION', payLoad: data })
@@ -58,27 +59,28 @@ function CardsList ({ list }) {
       dispatch({ type: 'ERROR', payLoad: err })
     }
   }
-  const changePosition = (event, sourceObj, targetPos) => {
+  const updateCardPosition = (event, sourceObj, targetObj) => {
+    console.log('AM In UPDATE CARD POSITION')
     event.preventDefault()
-    if (sourceObj.position < targetPos) {
-      sourceObj.position = targetPos + 0.1
-    } else if (sourceObj.position > targetPos) {
-      sourceObj.position = targetPos - 0.1
+    if (sourceObj.position < targetObj.position) {
+      sourceObj.position = targetObj.position + 0.1
+    } else if (sourceObj.position > targetObj.position) {
+      sourceObj.position = targetObj.position - 0.1
     }
-    updateCard(event, sourceObj, sourceObj.position)
+    // updateCard(event, sourceObj, sourceObj.position)
+    updateCard(event, sourceObj, targetObj)
   }
 
   const handleDragover = (e) => {
+    console.log('AM In DRAG OVER')
     e.preventDefault()
   }
 
-  const handleDrop = (e, pos) => {
+  const handleDrop = (e, target) => {
+    e.stopPropagation()
     e.preventDefault()
     const obj = JSON.parse(e.dataTransfer.getData('card'))
-    // const target = e.target // e.target.parentElement.parentElement
-    console.log('Being Dragged:', obj, pos)
-    changePosition(e, obj, pos)
-    // target.appendChild(document.getElementById(id))
+    updateCardPosition(e, obj, target)
     // e.dataTransfer.clearData()
   }
   return (
@@ -88,7 +90,7 @@ function CardsList ({ list }) {
           key={card.id}
           className='card-list'
           onDragOver={handleDragover}
-          onDrop={(e) => handleDrop(e, card.position)}
+          onDrop={(e) => handleDrop(e, card)}
         >
           <CardItem card={card} />
         </div>

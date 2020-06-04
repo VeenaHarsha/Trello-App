@@ -17,7 +17,6 @@ function Lists () {
     try {
       const response = await window.fetch(`http://localhost:2809/trello/list/${selBoard}`)
       const data = await response.json()
-      console.log('VVV:', data)
       dispatch({ type: 'GET_LISTS', payLoad: data })
     } catch (err) {
       dispatch({ type: 'ERROR', payLoad: err })
@@ -39,13 +38,60 @@ function Lists () {
       dispatch({ type: 'ERROR', payLoad: err })
     }
   }
+  const updateList = async (event, sourceObj, targetObj) => {
+    event.preventDefault()
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        position: sourceObj.position
+      })
+    }
+    try {
+      const url = `http://localhost:2809/trello/list/updateListPosition/?listId=${sourceObj.id}&&boardId=${targetObj.board_id}`
+      const response = await window.fetch(url, options)
+      const data = await response.json()
+      dispatch({ type: 'UPDATE_LIST_POSITION', payLoad: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payLoad: err })
+    }
+  }
+
+  const updateListPosition = (event, sourceObj, targetObj) => {
+    event.preventDefault()
+    if (sourceObj.position < targetObj.position) {
+      sourceObj.position = targetObj.position + 0.1
+    } else if (sourceObj.position > targetObj.position) {
+      sourceObj.position = targetObj.position - 0.1
+    }
+    updateList(event, sourceObj, targetObj)
+  }
+
+  const handleDragover = (e) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e, target) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const obj = JSON.parse(e.dataTransfer.getData('list'))
+    updateListPosition(e, obj, target)
+    // e.dataTransfer.clearData()
+  }
 
   return (
     <div className='list-div-container'>
       <p className='disp-board-name'>{selBoardName} </p>
       <div className='all-list-div'>
         {lists.map(list => (
-          <ListItem key={list.id} list={list} />
+          <div
+            key={list.id}
+            className='drag-list'
+            onDragOver={handleDragover}
+            onDrop={(e) => handleDrop(e, list)}
+          >
+            <ListItem list={list} />
+          </div>
         ))}
 
         {showListInput
@@ -71,7 +117,7 @@ function Lists () {
                 Close
               </button>
             </form>
-            </div> : null}
+          </div> : null}
 
         {!showListInput
           ? <div
@@ -79,7 +125,7 @@ function Lists () {
             onClick={() => dispatch({ type: 'HANDLE_LIST_CLICK' })}
             >
             Add a list
-          </div> : null}
+            </div> : null}
       </div>
     </div>
   )

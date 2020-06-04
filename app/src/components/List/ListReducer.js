@@ -1,4 +1,4 @@
-import { HANDLE_LIST_CLICK, ADD_LIST, GET_LISTS, ADD_LIST_INPUT } from '../../actionType'
+import { HANDLE_LIST_CLICK, ADD_LIST, GET_LISTS, ADD_LIST_INPUT, UPDATE_LIST_POSITION } from '../../actionType'
 
 export const initialState = {
   listName: '',
@@ -36,7 +36,19 @@ export const listReducer = (state, action) => {
         showListInput: !state.showListInput
       }
     }
-
+    case UPDATE_LIST_POSITION: {
+      return {
+        ...state,
+        lists:
+          state.lists.map(
+            list => {
+              return list.id === action.payLoad[0].id
+                ? { ...list, position: action.payLoad[0].position }
+                : list
+            }
+          )
+      }
+    }
     default: {
       return state
     }

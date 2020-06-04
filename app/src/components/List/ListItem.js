@@ -5,8 +5,39 @@ export const CardSta = createContext()
 export const ListDispatchContext = createContext()
 
 function ListItem ({ list }) {
+  const handleDragStart = (e, list) => {
+    console.log('List is :', list)
+    // dragSrcEl = e.target
+    e.target.style.opacity = '0.4'
+    const listObj = JSON.stringify(list)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('list', listObj)
+  }
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.currentTarget.style.background = 'lightgreen'
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDragEnter = (e) => {
+    e.currentTarget.style.background = 'lightgreen'
+    e.currentTarget.style.border = 'dashed'
+  }
+
+  const handleDragLeave = (e) => {
+    e.currentTarget.style.background = 'white'
+    e.currentTarget.style.border = 'none'
+  }
+
   return (
-    <div className='list-div'>
+    <div
+      className='list-div'
+      draggable
+      onDragStart={(e) => handleDragStart(e, list)}
+      onDragEnter={(e) => handleDragEnter(e)}
+      onDragOver={(e) => handleDragOver(e)}
+      onDragLeave={(e) => handleDragLeave(e)}
+    >
       <span className='list-header'> {list.list_name}</span>
       <div>
         <CardsList list={list} />

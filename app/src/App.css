@@ -161,10 +161,11 @@
     margin: 10px;
     /* height: 100px; */
     width: 250px;
-    padding:10px;
+    padding:20px;
     box-sizing: border-box;
     border-radius: 5px;
     background-color:#ebecf0;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
     
 }
 
@@ -172,14 +173,13 @@
   width:150px;
   border-radius: 3px;
   height: auto;
-  padding: 8px
+  padding: 10px
 }
 .add-list-btn{
    /* float: left; */
    border:none;
    color:beige;
    font-weight: bold;
-    margin: 2px;
     margin:5px;
     padding: 5px;
     background:rgb(84, 179, 84);
@@ -198,11 +198,14 @@
 }
 .list-form {
   width:205px;
-  height:60px;
+  height:70px;
   margin:10px;
   padding:10px;
   align-content: center;
   background-color: #ebecf0;
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+
   /* border: 2px solid #4CAF50; */
 }
 .list-header{
@@ -213,7 +216,7 @@
   border-radius: 3px;
   border:none;
   text-align: center;
-  padding: 5px;
+  padding: 8px;
   margin-bottom: 2px;
   font-weight: bold;
   /* border:5px solid green; */
@@ -225,7 +228,8 @@
   border:none;
   /* background:rgb(74, 247, 80); */
   margin-top:5px;
-  padding: 5px;
+  padding: 7px;
+  border-radius: 3px;
 
 }
 .add-card-link{
@@ -270,6 +274,16 @@
   font-size:15px;
   background: #fff;
   border-radius: 3px;
+  cursor: move;
+}
+.drag-list{
+  border:none;
+  padding:10px;
+  margin-bottom: 8px;
+  font-size:15px;
+  background: #fff;
+  border-radius: 3px;
+  cursor: move;
 }
 .home-container {
   display: flex;
@@ -375,7 +389,7 @@ li {
   background-color:#ebecf0;
   text-align: center;
   width:230px;
-  height:50px;
+  /* height:50px; */
   padding: 10px;
   margin: 10px;
   border-radius: 3px;

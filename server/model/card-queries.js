@@ -3,7 +3,7 @@ const pool = require('./database')
 const getCards = (req, res) => {
   const boardId = req.query.boardId
   const listId = req.query.listId
-  pool.query(`SELECT * FROM cards WHERE board_id = ${boardId} and list_id = ${listId} order by position asc`, (error, result) => {
+  pool.query(`SELECT * FROM cards WHERE board_id = ${boardId} and list_id = ${listId} order by position `, (error, result) => {
     if (error) {
       throw error
     }
@@ -23,14 +23,17 @@ const addCard = (req, res) => {
   })
 }
 const updateCardPosition = (req, res) => {
-  console.log('Selected Card is :', req.query, req.body)
   const cardId = req.query.cardId
+  const listId = req.query.listId
   const position = req.body.position
-  pool.query(`UPDATE cards SET position = '${position}' where id = ${cardId} RETURNING *`, (error, result) => {
+  pool.query(`UPDATE cards SET 
+              position = '${position}', 
+              list_id='${listId}'
+              where id = ${cardId} RETURNING *`,
+  (error, result) => {
     if (error) {
       throw error
     }
-    console.log('from cards:', result.rows)
     res.status(200).json(result.rows)
   })
 }

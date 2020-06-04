@@ -36,8 +36,15 @@ export const cardReducer = (state, action) => {
     }
     case UPDATE_CARD_POSITION: {
       return {
-        ...state
-        // cards: state.cards.concat(action.payLoad)
+        ...state,
+        cards:
+          state.cards.map(
+            card => {
+              return card.id === action.payLoad[0].id
+                ? { ...card, position: action.payLoad[0].position }
+                : card
+            }
+          )
       }
     }
     case ERROR: {
