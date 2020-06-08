@@ -1,4 +1,10 @@
-import { GET_LIST_CARDS, ADD_CARD, ERROR, HANDLE_CLOSE, ADD_CARD_INPUT, HANDLE_CARD_CLICK, UPDATE_CARD_POSITION } from '../../actionType'
+import { GET_LIST_CARDS, ADD_CARD, DELETE_CARD, ERROR, HANDLE_CLOSE, ADD_CARD_INPUT, HANDLE_CARD_CLICK, UPDATE_CARD_POSITION, UPDATE_CARD_POSITION_ACROSS_LIST } from '../../actionType'
+
+export const initialState = {
+  cards: [],
+  showCardInput: false,
+  cardTitle: ''
+}
 
 export const cardReducer = (state, action) => {
   switch (action.type) {
@@ -22,6 +28,12 @@ export const cardReducer = (state, action) => {
         cardTitle: ''
       }
     }
+    case DELETE_CARD: {
+      return {
+        ...state,
+        cards: action.payLoad
+      }
+    }
     case GET_LIST_CARDS: {
       return {
         ...state,
@@ -35,16 +47,23 @@ export const cardReducer = (state, action) => {
       }
     }
     case UPDATE_CARD_POSITION: {
+      const newCards = (state.cards.map(
+        card => (
+          card.id === action.payLoad[0].id ? { ...card, position: action.payLoad[0].position }
+            : card
+        )
+      ))
+      console.log('UPDATED Card POS IS: ', newCards.sort((a, b) => (a.position > b.position) ? 1 : -1))
+      return {
+        // ...state,
+        cards: newCards.sort((a, b) => (a.position > b.position) ? 1 : -1)
+      }
+    }
+    case UPDATE_CARD_POSITION_ACROSS_LIST: {
+      console.log('UPDATED Card POS Across Lists IS: ', state, state.cards.concat(action.payLoad[0]).sort((a, b) => (a.position > b.position) ? 1 : -1))
       return {
         ...state,
-        cards:
-          state.cards.map(
-            card => {
-              return card.id === action.payLoad[0].id
-                ? { ...card, position: action.payLoad[0].position }
-                : card
-            }
-          )
+        cards: state.cards.concat(action.payLoad[0]).sort((a, b) => (a.position > b.position) ? 1 : -1)
       }
     }
     case ERROR: {
@@ -57,10 +76,4 @@ export const cardReducer = (state, action) => {
       return state
     }
   }
-}
-
-export const initialState = {
-  cards: [],
-  showCardInput: false,
-  cardTitle: ''
 }

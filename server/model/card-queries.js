@@ -10,18 +10,30 @@ const getCards = (req, res) => {
     res.status(200).json(result.rows)
   })
 }
+
 const addCard = (req, res) => {
   const boardId = req.body.board_id
   const listId = req.body.list_id
   const cardDesc = req.body.card_desc
+  // const position = req.body.position
   pool.query(`INSERT INTO cards (board_id,list_id,card_desc,is_archive) 
-   values (${boardId},${listId},'${cardDesc}',false ) RETURNING *`, (error, result) => {
+   values (${boardId},${listId},'${cardDesc}',false) RETURNING *`, (error, result) => {
     if (error) {
       throw error
     }
     res.status(200).json(result.rows)
   })
 }
+const deleteCard = (req, res) => {
+  const cardId = req.params.id
+  pool.query(`delete from cards where id = ${cardId}`, (error, result) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(result.rows)
+  })
+}
+
 const updateCardPosition = (req, res) => {
   const cardId = req.query.cardId
   const listId = req.query.listId
@@ -37,4 +49,4 @@ const updateCardPosition = (req, res) => {
     res.status(200).json(result.rows)
   })
 }
-module.exports = { getCards, addCard, updateCardPosition }
+module.exports = { getCards, addCard, updateCardPosition, deleteCard }

@@ -1,8 +1,5 @@
-import React, { createContext } from 'react'
+import React from 'react'
 import CardsList from '../Cards/CardsList'
-
-export const CardSta = createContext()
-export const ListDispatchContext = createContext()
 
 function ListItem ({ list }) {
   const handleDragStart = (e, list) => {
@@ -13,19 +10,24 @@ function ListItem ({ list }) {
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('list', listObj)
   }
+  const handleDragEnd = (e) => {
+    e.target.style.opacity = ''
+    e.currentTarget.style.border = ''
+    // e.currentTarget.style.background = 'white'
+  }
   const handleDragOver = (e) => {
     e.preventDefault()
-    e.currentTarget.style.background = 'lightgreen'
+    // e.currentTarget.style.background = 'lightgreen'
     e.dataTransfer.dropEffect = 'move'
   }
 
   const handleDragEnter = (e) => {
-    e.currentTarget.style.background = 'lightgreen'
+    // e.currentTarget.style.background = 'lightgreen'
     e.currentTarget.style.border = 'dashed'
   }
 
   const handleDragLeave = (e) => {
-    e.currentTarget.style.background = 'white'
+    // e.currentTarget.style.background = 'white'
     e.currentTarget.style.border = 'none'
   }
 
@@ -35,6 +37,7 @@ function ListItem ({ list }) {
       draggable
       onDragStart={(e) => handleDragStart(e, list)}
       onDragEnter={(e) => handleDragEnter(e)}
+      onDragEnd={(e) => handleDragEnd(e)}
       onDragOver={(e) => handleDragOver(e)}
       onDragLeave={(e) => handleDragLeave(e)}
     >

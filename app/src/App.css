@@ -159,7 +159,7 @@
 .list-div{
   /* display: inline-block; */
     margin: 10px;
-    /* height: 100px; */
+    height: 100%;
     width: 250px;
     padding:20px;
     box-sizing: border-box;
@@ -227,10 +227,10 @@
   background: lightgray;
   border:none;
   /* background:rgb(74, 247, 80); */
-  margin-top:5px;
+  /* margin-top:5px; */
   padding: 7px;
   border-radius: 3px;
-
+  
 }
 .add-card-link{
   /* border:2px solid magenta; */
@@ -267,6 +267,7 @@
   /* border:5px solid red; */
 }
 .card-div {
+  display: flex;
   border:none;
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
   padding:5px;
@@ -276,6 +277,16 @@
   border-radius: 3px;
   cursor: move;
 }
+.card-desc{
+  flex-grow: 4;
+  text-align: left;
+}
+.card-edit-image{
+  width:15px;
+  flex-basis: 1;
+  cursor: pointer;
+}
+
 .drag-list{
   border:none;
   padding:10px;
@@ -283,7 +294,7 @@
   font-size:15px;
   background: #fff;
   border-radius: 3px;
-  cursor: move;
+  /* cursor: move; */
 }
 .home-container {
   display: flex;
@@ -362,12 +373,8 @@ ul {
 }
 li {
   margin-bottom: 4px;
-  /* border:1px solid #ccc;
-  background: #e4f0f6; */
   padding: 5px;
-  /* background-color: #cae8ca; */
   background-color:rgb(149, 248, 153);
-  /* border: 2px solid #4CAF50; */
   text-align: center;
   display: list-item;
   color: black;
@@ -389,11 +396,204 @@ li {
   background-color:#ebecf0;
   text-align: center;
   width:230px;
-  /* height:50px; */
+  height:30px;
   padding: 10px;
   margin: 10px;
   border-radius: 3px;
   font-size:14px;
   font-weight: 900;
+  cursor: pointer;
+}
+
+.card-editor-overlay {
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  /* background-color: #4CAF50; */
+  z-index: 10;
+  position: fixed;
+  cursor: pointer;
+}
+.close-overlay {
+  right:10px;
+  top:10px;
+  position: fixed;
+  background: chartreuse;
+  border-radius: 3px;
+  padding:5px;
+  margin:10px;
+  font-weight: bold;
+}
+.card-editor{
+    top: 128px;
+    left: 16px;
+    position: relative;
+  display: flex;
+}
+.edit-card-name {
+  margin-left:27px;
+  margin-top:30px;
+  padding:5px;
+  border-radius: 5px;
+  width:190px;
+  overflow: hidden;
+  word-wrap: wrap;
+}
+.card-edit-div {
+ z-index: 10;
+ position: relative;
+}
+.card-ops-div {
+  opacity: 1;
+  margin-left:10px;
+  margin-top:30px;
+  background:transparent;
+  top:0;
+}
+.card-ops-a-tag{
+    background: rgba(0,0,0,.6);
+    display: flex;
+    border-radius: 3px;
+    clear: both;
+    color: #e6e6e6;
+    margin-bottom: 8px;
+    float: left;
+    padding: 6px 12px 6px 12px;
+    text-decoration: none;
+}
+.card-image {
+  width:18px;
+  cursor: pointer;
+  text-align: left;
+  left:0;
+  padding: 1px;
+  margin-top: 1px;
+  background: snow;
+}
+.card-label {
+  flex-grow: 3;
+  margin-left:4px;
+  text-align: left;
+  padding: 1px;
+  color: snow;
+  font-size:13px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.copy-card-editor-overlay {
+  display: block;
+  margin-left:250px;
+  width: 300px;
+  height: 400px;
+  top: 80px;
+  left: 0px;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  /* background-color: #e6e6e6; */
+  z-index: 100;
+  overflow-y: scroll;
+  position: fixed;
+  cursor: pointer;
+  background: whitesmoke;
+}
+.copy-card-header{
+  padding:10px;
+  display: flex;
+  color:slateblue;
+}
+.copy-card-label {
+  flex-grow: 4;
+  text-align: center;
+  padding: 3px;
+  font-weight: bold;
+  color:slateblue;
+}
+.card-del-image {
+  padding: 3px;
+  background: transparent;
+  width:15px;
+}
+.copy-op-form {
+  /* border-top:1px solid gray; */
+  background: #fff;
+  margin:10px;
+  height: 100px;
+}
+.copy-form-title {
+  text-align: left;
+  padding: 5px;
+  font-weight: 800;
+  color:slategrey;
+  font-size: 13px;
+}
+.copy-form-desc {
+  border-radius: 5px;
+  padding:5px;
+}
+.copy-form-copy-to {
+  text-align: left;
+  padding: 5px;
+  font-weight: 800;
+  color:slategrey;
+  font-size: 13px;
+
+}
+.copy-form-select-board-div {
+  padding: 5px;
+  /* width:250px; */
+  background: rgb(235, 232, 232);
+  /* margin:10px; */
+  border-radius: 5px;
+}
+.copy-form-board-inner-label{
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color:slategrey;
+  margin-left:10px;
+  padding: 5px;
+
+}
+.choose-board-input {
+  text-align: left;
+  width:190px;
+  padding: 10px;
+  border:none;
+  border-radius: 3px;
+  display: block;
+  margin-left:10px;
+  margin-bottom: 5px;
+}
+.copy-form-boards-list{
+  display: block;
+  width:190px;
+  padding:8px;
+  text-align: left;
+  border:1px solid slategray;
+  overflow: hidden;
+}
+.copy-form-board-desc{
+  display: block;
+  text-align: left;
+  margin-left:10px;
+  font-size: 14px;
+  margin-left:10px ;
+  padding:8px;
+
+}
+.btn-update-card-details{
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border:none;
+  background:rgb(99, 240, 64);
+  font-weight: 900;
+  color: beige;
   cursor: pointer;
 }

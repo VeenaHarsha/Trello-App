@@ -27,6 +27,10 @@ function CardsList ({ list }) {
 
   const submitCard = async (event) => {
     event.preventDefault()
+    console.log('POSITION OF THE LAST CARD:', cards.sort((a, b) => (a.position > b.position) ? 1 : -1))
+    // const sortedCards = cards.sort((a, b) => (a.position > b.position) ? 1 : -1)
+    // const position = sortedCards.length ? sortedCards[sortedCards.length - 1].position + 1024 : 1024
+
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
@@ -40,9 +44,8 @@ function CardsList ({ list }) {
       dispatch({ type: 'ERROR', payLoad: err })
     }
   }
-  const updateCard = async (event, sourceObj, targetObj) => {
+  const moveCardSameList = async (event, sourceObj, targetObj) => {
     event.preventDefault()
-    console.log('Object:', sourceObj, targetObj)
     const options = {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -59,16 +62,37 @@ function CardsList ({ list }) {
       dispatch({ type: 'ERROR', payLoad: err })
     }
   }
-  const updateCardPosition = (event, sourceObj, targetObj) => {
-    console.log('AM In UPDATE CARD POSITION')
+  const moveCardAcrossList = async (event, sourceObj, targetObj) => {
     event.preventDefault()
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        position: sourceObj.position
+      })
+    }
+    try {
+      const url = `http://localhost:2809/trello/card/updatePosition/?cardId=${sourceObj.id}&&listId=${targetObj.list_id}`
+      const response = await window.fetch(url, options)
+      const data = await response.json()
+      console.log('COV: ', cards)
+      dispatch({ type: 'UPDATE_CARD_POSITION_ACROSS_LIST', payLoad: data })
+    } catch (err) {
+      dispatch({ type: 'ERROR', payLoad: err })
+    }
+  }
+  const updateCardPosition = (event, sourceObj, targetObj) => {
+    event.preventDefault()
+    console.log('SOURCE:', sourceObj, 'TARGET:', targetObj)
     if (sourceObj.position < targetObj.position) {
-      sourceObj.position = targetObj.position + 0.1
+      sourceObj.position = targetObj.position + 1
     } else if (sourceObj.position > targetObj.position) {
-      sourceObj.position = targetObj.position - 0.1
+      sourceObj.position = targetObj.position - 0.001
     }
     // updateCard(event, sourceObj, sourceObj.position)
-    updateCard(event, sourceObj, targetObj)
+    (sourceObj.list_id === targetObj.list_id)
+      ? moveCardSameList(event, sourceObj, targetObj)
+      : moveCardAcrossList(event, sourceObj, targetObj)
   }
 
   const handleDragover = (e) => {
@@ -103,9 +127,9 @@ function CardsList ({ list }) {
             className='add-card-link'
             onClick={() => dispatch({ type: 'HANDLE_CARD_CLICK' })}
           >
-                    Add a Card
+                      Add a Card
           </a>
-          </div> : null}
+        </div> : null}
       {showCardInput
         ? <div>
           <form className='card-form' onSubmit={submitCard}>
@@ -128,7 +152,7 @@ function CardsList ({ list }) {
             >X
             </span>
           </form>
-          </div> : null}
+        </div> : null}
 
     </div>
   )

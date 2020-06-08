@@ -25,10 +25,13 @@ function Lists () {
 
   const submitList = async (event) => {
     event.preventDefault()
+    // console.log('POSITION OF THE LAST LIST:', lists.sort((a, b) => (a.position > b.position) ? 1 : -1))
+    const sortedLists = lists.sort((a, b) => (a.position > b.position) ? 1 : -1)
+    const position = sortedLists.length ? sortedLists[sortedLists.length - 1].position + 1024 : 1024
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      body: JSON.stringify({ board_id: selBoard, list_name: listName })
+      body: JSON.stringify({ board_id: selBoard, list_name: listName, position: position })
     }
     try {
       const response = await window.fetch('http://localhost:2809/trello/list/add', options)
@@ -59,10 +62,12 @@ function Lists () {
 
   const updateListPosition = (event, sourceObj, targetObj) => {
     event.preventDefault()
+    console.log('SOURCE:', sourceObj, 'TARGET:', targetObj)
+
     if (sourceObj.position < targetObj.position) {
-      sourceObj.position = targetObj.position + 0.1
+      sourceObj.position = targetObj.position + 1
     } else if (sourceObj.position > targetObj.position) {
-      sourceObj.position = targetObj.position - 0.1
+      sourceObj.position = targetObj.position - 0.001
     }
     updateList(event, sourceObj, targetObj)
   }
@@ -81,7 +86,7 @@ function Lists () {
 
   return (
     <div className='list-div-container'>
-      <p className='disp-board-name'>{selBoardName} </p>
+      <p className='disp-board-name'>Board: {selBoardName} </p>
       <div className='all-list-div'>
         {lists.map(list => (
           <div

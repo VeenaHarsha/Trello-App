@@ -13,7 +13,8 @@ const getLists = (req, res) => {
 const addList = (req, res) => {
   const boardId = req.body.board_id
   const listName = req.body.list_name
-  pool.query(`INSERT INTO lists (board_id, list_name) values (${boardId},'${listName}') RETURNING *`,
+  const position = req.body.position
+  pool.query(`INSERT INTO lists (board_id, list_name, position) values (${boardId},'${listName}', ${position}) RETURNING *`,
     (error, result) => {
       if (error) {
         throw error

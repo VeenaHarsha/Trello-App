@@ -12,7 +12,7 @@ function BoardItem ({ board }) {
           payLoad: { id: board.id, name: board.board_name }
         })}
       >
-        {board.board_name} - {board.id}
+        {board.board_name}
       </div>
     </>
   )

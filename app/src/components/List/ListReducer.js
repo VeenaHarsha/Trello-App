@@ -37,16 +37,17 @@ export const listReducer = (state, action) => {
       }
     }
     case UPDATE_LIST_POSITION: {
+      const newList = (state.lists.map(
+        list => {
+          return list.id === action.payLoad[0].id
+            ? { ...list, position: action.payLoad[0].position }
+            : list
+        }
+      ))
+      console.log('UPDATED LIST POS IS: ', newList, newList.sort((a, b) => (a.position > b.position) ? 1 : -1))
       return {
         ...state,
-        lists:
-          state.lists.map(
-            list => {
-              return list.id === action.payLoad[0].id
-                ? { ...list, position: action.payLoad[0].position }
-                : list
-            }
-          )
+        lists: newList.sort((a, b) => (a.position > b.position) ? 1 : -1)
       }
     }
     default: {
