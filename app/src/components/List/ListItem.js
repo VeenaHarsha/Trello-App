@@ -1,7 +1,7 @@
 import React from 'react'
 import CardsList from '../Cards/CardsList'
 
-function ListItem ({ list }) {
+function ListItem ({ list, lists, listDispatch }) {
   const handleDragStart = (e, list) => {
     console.log('List is :', list)
     // dragSrcEl = e.target
@@ -43,7 +43,7 @@ function ListItem ({ list }) {
     >
       <span className='list-header'> {list.list_name}</span>
       <div>
-        <CardsList list={list} />
+        <CardsList list={list} lists={lists} listDispatch={listDispatch} />
       </div>
     </div>
   )

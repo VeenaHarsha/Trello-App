@@ -95,7 +95,7 @@ function Lists () {
             onDragOver={handleDragover}
             onDrop={(e) => handleDrop(e, list)}
           >
-            <ListItem list={list} />
+            <ListItem list={list} lists={lists} listDispatch={dispatch} />
           </div>
         ))}
 

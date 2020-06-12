@@ -16,7 +16,7 @@ export const listReducer = (state, action) => {
       }
     }
     case GET_LISTS : {
-      console.log('From getBoardList: ', state, action.payLoad)
+      console.log('From getLists of Board: ', state, action.payLoad)
       return {
         ...state,
         lists: action.payLoad

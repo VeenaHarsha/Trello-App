@@ -15,18 +15,9 @@ const addCard = (req, res) => {
   const boardId = req.body.board_id
   const listId = req.body.list_id
   const cardDesc = req.body.card_desc
-  // const position = req.body.position
-  pool.query(`INSERT INTO cards (board_id,list_id,card_desc,is_archive) 
-   values (${boardId},${listId},'${cardDesc}',false) RETURNING *`, (error, result) => {
-    if (error) {
-      throw error
-    }
-    res.status(200).json(result.rows)
-  })
-}
-const deleteCard = (req, res) => {
-  const cardId = req.params.id
-  pool.query(`delete from cards where id = ${cardId}`, (error, result) => {
+  const position = req.body.position
+  pool.query(`INSERT INTO cards (board_id,list_id,card_desc,is_archive, position) 
+   values (${boardId},${listId},'${cardDesc}',false,${position}) RETURNING *`, (error, result) => {
     if (error) {
       throw error
     }
@@ -49,4 +40,33 @@ const updateCardPosition = (req, res) => {
     res.status(200).json(result.rows)
   })
 }
-module.exports = { getCards, addCard, updateCardPosition, deleteCard }
+
+const deleteCard = (req, res) => {
+  console.log('AM in DELETE query..')
+  const cardId = req.params.id
+  console.log('Deleting..', cardId)
+  pool.query(`delete from cards where id = ${cardId}`, (error, result) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json({ message: 'Card Deleted' })
+  })
+}
+
+const updateCardTitle = (req, res) => {
+  const cardId = req.params.id
+  const cardDesc = req.body.card_desc
+
+  console.log('RainBow  BODY:', req.body, cardId)
+  pool.query(`UPDATE cards SET 
+      card_desc = '${cardDesc}'
+      where id = ${cardId} RETURNING *`,
+  (error, result) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(result.rows)
+  })
+}
+
+module.exports = { getCards, addCard, updateCardPosition, deleteCard, updateCardTitle }

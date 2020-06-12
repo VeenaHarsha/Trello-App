@@ -8,7 +8,6 @@ function CardsList ({ list, lists, listDispatch }) {
   const boardState = useContext(StateContext)
   const { selBoard } = boardState
   const { cards, showCardInput, cardTitle } = state
-  const selListId = list.id
 
   useEffect(() => {
     getListCards()
@@ -26,7 +25,7 @@ function CardsList ({ list, lists, listDispatch }) {
     }
   }
 
-  const submitAddCard = async (event, selBoard, selListId, cardDesc) => {
+  const submitAddCard = async (event) => {
     event.preventDefault()
     console.log('POSITION OF THE LAST CARD:', cards.sort((a, b) => (a.position > b.position) ? 1 : -1))
     const sortedCards = cards.sort((a, b) => (a.position > b.position) ? 1 : -1)
@@ -37,8 +36,8 @@ function CardsList ({ list, lists, listDispatch }) {
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       body: JSON.stringify({
         board_id: selBoard,
-        list_id: selListId,
-        card_desc: cardDesc,
+        list_id: list.id,
+        card_desc: cardTitle,
         is_archive: false,
         position: position
       })
@@ -149,7 +148,6 @@ function CardsList ({ list, lists, listDispatch }) {
   const handleCopyCard = async (event, newTitle, newBoardId, newListId) => {
     console.log('Details r: ', newTitle, newBoardId, newListId)
     event.preventDefault()
-    // submitAddCard(event, newBoardId, newListId, newTitle)
     const sortedCards = cards.sort((a, b) => (a.position > b.position) ? 1 : -1)
     const position = sortedCards.length ? sortedCards[sortedCards.length - 1].position + 1 : 1024
 
@@ -169,6 +167,7 @@ function CardsList ({ list, lists, listDispatch }) {
       const data = await response.json()
       console.log('NEwly added Card from Copy Card Form is:', data)
       dispatch({ type: 'HANDLE_COPY_CARD_TO', payLoad: data })
+      
     } catch (err) {
       dispatch({ type: 'ERROR', payLoad: err })
     }
@@ -211,7 +210,7 @@ function CardsList ({ list, lists, listDispatch }) {
           </div> : null}
       {showCardInput
         ? <div>
-          <form className='card-form' onSubmit={(e) => submitAddCard(e, selBoard, selListId, cardTitle)}>
+          <form className='card-form' onSubmit={submitAddCard}>
             <textarea
               type='text'
               className='card-text-input'

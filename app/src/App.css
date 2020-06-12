@@ -95,11 +95,11 @@
   border-radius: 3px;
 }
 .close-board-button {
-  padding: 5px;
+  padding: 6px;
   margin: 5px;
-  width:50px;
-  background:rgb(84, 179, 84);
-  color:whitesmoke;
+  width:80px;
+  background:rgb(99, 240, 84);
+  color:black;
   font-weight: 800;
   border:none;
   border-radius: 3px;
@@ -182,7 +182,8 @@
    font-weight: bold;
     margin:5px;
     padding: 5px;
-    background:rgb(84, 179, 84);
+    /* background:rgb(84, 179, 84); */
+    background:rgb(99, 240, 84);
     color:whitesmoke;
     font-weight: 800;
     border-radius: 3px;
@@ -404,9 +405,13 @@ li {
   font-weight: 900;
   cursor: pointer;
 }
-
+.hide {
+	display: none
+}
+.show {
+	display: block
+}
 .card-editor-overlay {
-  display: none;
   width: 100%;
   height: 100%;
   top: 0;
@@ -417,17 +422,24 @@ li {
   /* background-color: #4CAF50; */
   z-index: 10;
   position: fixed;
+  /* position: sticky; */
   cursor: pointer;
 }
 .close-overlay {
-  right:10px;
-  top:10px;
+  /* right:128px; */
+  /* top:16px; */
+  right: 0;
+  font-size: 15px;
+  color:blue;
   position: fixed;
   background: chartreuse;
   border-radius: 3px;
-  padding:5px;
+  padding:10px;
   margin:10px;
-  font-weight: bold;
+  font-weight: 1000;
+  width:80px;
+    /* height:80px; */
+  /* background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/113212/cross.png) no-repeat center center; */
 }
 .card-editor{
     top: 128px;
@@ -443,6 +455,17 @@ li {
   width:190px;
   overflow: hidden;
   word-wrap: wrap;
+}
+.save-card-name{
+  margin-left:27px;
+  padding: 5px;
+  margin: 5px;
+  width:50px;
+  /* background:rgb(99, 240, 84); */
+  color:black;
+  font-weight: 800;
+  border:none;
+  border-radius: 3px;
 }
 .card-edit-div {
  z-index: 10;
@@ -486,18 +509,18 @@ li {
 }
 
 .copy-card-editor-overlay {
-  display: block;
+  /* display: block; */
   margin-left:250px;
   width: 300px;
-  height: 400px;
+  height: 310px;
   top: 80px;
   left: 0px;
   right: 0;
   bottom: 0;
   border-radius: 5px;
   /* background-color: #e6e6e6; */
-  z-index: 100;
-  overflow-y: scroll;
+  z-index: 11;
+  /* overflow-y: scroll; */
   position: fixed;
   cursor: pointer;
   background: whitesmoke;
@@ -540,34 +563,34 @@ li {
   text-align: left;
   padding: 5px;
   font-weight: 800;
-  color:slategrey;
+  color:slateblue;
+  background: whitesmoke;
   font-size: 13px;
 
 }
 .copy-form-select-board-div {
-  padding: 5px;
-  /* width:250px; */
-  background: rgb(235, 232, 232);
-  /* margin:10px; */
-  border-radius: 5px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 2px;
+  /* background: rgb(235, 232, 232); */
+  background: #fff;
+  /* border-radius: 5px; */
 }
 .copy-form-board-inner-label{
-  display: block;
+  width:15%;
   text-align: left;
   font-size: 14px;
   color:slategrey;
-  margin-left:10px;
   padding: 5px;
-
+  font-weight: bold;
+  margin-bottom: 1px solid #f4f4f4;
 }
 .choose-board-input {
+  width:70%;
   text-align: left;
-  width:190px;
-  padding: 10px;
+  padding: 5px;
   border:none;
   border-radius: 3px;
-  display: block;
-  margin-left:10px;
   margin-bottom: 5px;
 }
 .copy-form-boards-list{
@@ -583,17 +606,23 @@ li {
   text-align: left;
   margin-left:10px;
   font-size: 14px;
-  margin-left:10px ;
-  padding:8px;
-
+  margin-bottom:3px ;
+  padding:5px;
+  /* border-bottom:1px dotted #ccc; */
+  font-weight: 200;
+  background-color: #fafafa;
+    width: 200px;
+    border-radius: 3px;
 }
+
 .btn-update-card-details{
   margin-top: 10px;
   padding: 10px;
   border-radius: 5px;
   border:none;
-  background:rgb(99, 240, 64);
+  /* background:rgb(99, 240, 84); */
+  background:slateblue;
   font-weight: 900;
-  color: beige;
+  color: black;
   cursor: pointer;
 }
